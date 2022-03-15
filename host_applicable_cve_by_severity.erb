@@ -1,5 +1,5 @@
 <%#
-name: Host - Applicable Errata Count
+name: Host - Applicable CVE by Severity
 snippet: false
 template_inputs:
 - name: Hosts filter
@@ -22,14 +22,15 @@ template_inputs:
   hidden_value: false
 model: ReportTemplate
 -%>
-<%- report_headers 'Host', 'Operating System', 'Bugfix', 'Security', 'Enhancement' -%>
+<%- report_headers 'Host', 'Operating System', 'Critical', 'Important', 'Moderate', 'Low' -%>
 <%- load_hosts(search: input('Hosts filter')).each_record do |host| -%>
 <%-   report_row(
           'Host': host.name,
           'Operating System': host.operatingsystem,
-          'Bugfix': host_applicable_errata_filtered(host, filter = 'Bugfix').size,
-          'Security': host_applicable_errata_filtered(host, filter = 'Security').size,
-          'Enhancement': host_applicable_errata_filtered(host, filter = 'Enhancement').size
+          'Critical': host_applicable_errata_filtered(host, filter = 'Critical').size,
+          'Important': host_applicable_errata_filtered(host, filter = 'Important').size,
+          'Moderate': host_applicable_errata_filtered(host, filter = 'Moderate').size, 
+          'Low': host_applicable_errata_filtered(host, filter = 'Low').size
       ) -%>
 <%- end -%>
 <%= report_render -%>
