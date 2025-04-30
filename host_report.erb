@@ -24,14 +24,14 @@ template_inputs:
   hidden_value: false
 model: ReportTemplate
 -%>
-<%- report_headers 'Host ID', 'Name', 'IP','VIRT', 'X', 'VM HIST', 'CPU', 'CORES', 'SOCKETS', 'RAM' -%>
+<%- report_headers 'Host ID', 'Name', 'IP','VIRT', 'Fact Output', 'VM HIST', 'CPU', 'CORES', 'SOCKETS', 'RAM' -%>
 <%- load_hosts(search: input('hosts'), includes: :host_statuses).each_record do |host| -%>
 <%-   report_row({
         'ID': host.id,
         'Name': host.name,
         'IP': host.ip,
         'VIRT': ( (JSON.parse(host.facts.to_json)["virt::is_guest"] == "true"  or JSON.parse(host.facts.to_json)["is_virtual"])? "VM" : "Physical"),
-        'X': JSON.parse(host.facts.to_json.downcase)["virt::is_guest"],
+        'Fact Output': JSON.parse(host.facts.to_json.downcase)["virt::is_guest"],
         'VM HIST': host.hypervisor_host,
         'CPU': host.facts['cpu::cpu(s)'],
         'CORES': host.cores,
