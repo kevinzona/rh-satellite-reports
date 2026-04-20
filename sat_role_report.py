@@ -77,12 +77,8 @@ class SatelliteRoleApp:
             f_data = self.fetch_role_filters(role_id)
             f_convert = f_data.replace(",", ";")
             filters_list = " ".join(f_convert.split())
-            #print(f"{role_id}")
-            #print(f"{filters_list}")
             
             # Print CSV Row
-            #print(f"{r}")
-            #print(f"{role_id},{role_name},{is_builtin},\"{user_list}\",\"{perm_list}\",{r.get('created_at')},{r.get('updated_at')}")
             print(f"{role_id},{role_name},{is_builtin},{role_desc},{filters_list}")
 
 def main():
