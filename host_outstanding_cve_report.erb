@@ -1,0 +1,29 @@
+<%#
+name: Host Outstanding CVEs Report
+snippet: false
+template_inputs:
+- name: Hosts filter
+  required: false
+  input_type: user
+  description: Limit the report to specific hosts (e.g., hostgroup = "Production"). Leave blank for all hosts.
+  value_type: search
+  resource_type: Host
+-%>
+
+<% load_hosts(search: input('Hosts filter')).each_record do |host| -%>
+  <% host_applicable_errata_filtered(host).each do |erratum| -%>
+    <% if erratum.errata_type == 'security' || !erratum.cves.empty? -%>
+      <% report_row(
+            'Host Name' => host.name,
+            'Operating System' => host.operatingsystem,
+            'Erratum ID' => erratum.errata_id,
+            'Severity' => erratum.severity,
+            'CVEs' => erratum.cves,
+            'Erratum Title' => erratum.title,
+            'Release Date' => erratum.issued
+          ) -%>
+    <% end -%>
+  <% end -%>
+<% end -%>
+
+<%= report_render %>
